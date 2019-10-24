@@ -85,6 +85,12 @@ class RecommendationValidationRulesType extends \DTS\eBaySDK\Types\BaseType
             'attribute' => false,
             'elementName' => 'Relationship'
         ],
+        'UsageConstraint' => [
+            'type' => 'string',
+            'repeatable' => false,
+            'attribute' => false,
+            'elementName' => 'UsageConstraint'
+        ],
         'VariationPicture' => [
             'type' => 'string',
             'repeatable' => false,
