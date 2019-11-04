@@ -81,6 +81,12 @@ class RecommendationValidationRulesType extends \DTS\eBaySDK\Types\BaseType
             'repeatable' => false,
             'attribute' => false,
             'elementName' => 'ValueFormat'
+        ],
+        'UsageConstraint' => [
+            'type' => 'string',
+            'repeatable' => false,
+            'attribute' => false,
+            'elementName' => 'UsageConstraint'
         ]
     ];
 
