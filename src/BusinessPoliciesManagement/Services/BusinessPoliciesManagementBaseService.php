@@ -16,6 +16,8 @@ class BusinessPoliciesManagementBaseService extends \DTS\eBaySDK\Services\BaseSe
      */
     const HDR_AUTH_TOKEN = 'X-EBAY-SOA-SECURITY-TOKEN';
 
+    const HDR_AUTH_TOKEN_IAF = 'X-EBAY-SOA-SECURITY-IAFTOKEN';
+
     /**
      * HTTP header constant. The global ID of the eBay site the request is for.
      */
@@ -71,7 +73,12 @@ class BusinessPoliciesManagementBaseService extends \DTS\eBaySDK\Services\BaseSe
         $headers = [];
 
         // Add required headers first.
-        $headers[self::HDR_AUTH_TOKEN] = $this->getConfig('authToken');
+        // E.g. v^1.1#i^1#p^3#r^1#f^0#I^3#t^Ul4xMF84...............................
+        if (preg_match('/^v\^\d/', $this->getConfig('authToken'))) {
+            $headers[self::HDR_AUTH_TOKEN_IAF] = $this->getConfig('authToken');
+        } else {
+            $headers[self::HDR_AUTH_TOKEN] = $this->getConfig('authToken');
+        }
         $headers[self::HDR_GLOBAL_ID] = $this->getConfig('globalId');
         $headers[self::HDR_OPERATION_NAME] = $operationName;
 
