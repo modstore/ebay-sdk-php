@@ -47,11 +47,16 @@ class ShoppingBaseService extends \DTS\eBaySDK\Services\BaseService
     const HDR_TRACKING_PARTNER_CODE = 'X-EBAY-API-TRACKING-PARTNER-CODE';
 
     /**
+     * HTTP header constant. The OAUTH Authentication Token that is used to validate the caller has permission to access the eBay servers.
+     */
+    const HDR_AUTHORIZATION = 'X-EBAY-API-IAF-TOKEN';
+
+    /**
      * @param array $config Configuration option values.
      */
     public function __construct(array $config)
     {
-        parent::__construct('http://open.api.ebay.com/shopping', 'http://open.api.sandbox.ebay.com/shopping', $config);
+        parent::__construct('https://open.api.ebay.com/shopping', 'http://open.api.sandbox.ebay.com/shopping', $config);
     }
 
     /**
@@ -97,7 +102,6 @@ class ShoppingBaseService extends \DTS\eBaySDK\Services\BaseService
 
         // Add required headers first.
         $headers[self::HDR_API_VERSION] = $this->getConfig('apiVersion');
-        $headers[self::HDR_APP_ID] = $this->getConfig('credentials')->getAppId();
         $headers[self::HDR_OPERATION_NAME] = $operationName;
         $headers[self::HDR_REQUEST_FORMAT] = 'XML';
 
@@ -117,6 +121,13 @@ class ShoppingBaseService extends \DTS\eBaySDK\Services\BaseService
 
         if ($this->getConfig('trackingPartnerCode')) {
             $headers[self::HDR_TRACKING_PARTNER_CODE] = $this->getConfig('trackingPartnerCode');
+        }
+
+        // New OAuth or fallback to the legacy option which is deprecated 2021/07/01.
+        if ($this->getConfig('authToken') !== null) {
+            $headers[self::HDR_AUTHORIZATION] = $this->getConfig('authToken');
+        } else {
+            $headers[self::HDR_APP_ID] = $this->getConfig('credentials')->getAppId();
         }
 
         return $headers;
